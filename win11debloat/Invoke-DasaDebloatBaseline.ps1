@@ -31,7 +31,11 @@ function Invoke-Upstream([string[]]$Arguments) {
     if ($WhatIf) { $a += '-WhatIf' }
     Write-Host ">> powershell.exe $($a -join ' ')"
     # Stream child output to the host only; the function's return value must be the exit code alone
-    & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" @a 2>&1 | ForEach-Object { Write-Host $_ }
+    # PS 5.1: with ErrorActionPreference=Stop, 2>&1 on a native command turns any stderr line into a
+    # terminating error. Relax it for the child call only; judge success by the exit code.
+    $prev = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+    try { & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" @a 2>&1 | ForEach-Object { Write-Host "$_" } }
+    finally { $ErrorActionPreference = $prev }
     return [int]$LASTEXITCODE
 }
 
@@ -97,6 +101,6 @@ try {
 catch { $failures++; Write-Error $_ }
 finally {
     Remove-Item $tmpDir -Recurse -Force -ErrorAction SilentlyContinue
-    Stop-Transcript | Out-Null
+    try { Stop-Transcript | Out-Null } catch { }
 }
 exit ([int]($failures -gt 0))
