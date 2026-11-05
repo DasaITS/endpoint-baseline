@@ -22,3 +22,6 @@ build/build-bundle.py          reproducible bundle zip + SHA256
 ## Status
 DRAFT — not yet run on an endpoint. Pilot on a lab VM, then one client, before rollout.
 Intune-managed clients: let Intune own diagnostic-data settings (drop `DisableTelemetry`).
+
+## Deliberately kept (not removed even though upstream selects them by default)
+`MSTeams`, `Microsoft.MicrosoftOfficeHub`, `Microsoft.MicrosoftStickyNotes`, `Microsoft.Todos`, `Microsoft.PowerAutomateDesktop`, `Microsoft.WindowsAlarms`, `Microsoft.WindowsSoundRecorder`, `MicrosoftCorporationII.QuickAssist` (remote-support tool; added in 2026.10.30-dasa2).

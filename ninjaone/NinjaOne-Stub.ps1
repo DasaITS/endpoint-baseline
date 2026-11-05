@@ -2,7 +2,7 @@
 # Script variables: $env:tier (Baseline|BaselinePlusOEM), $env:whatif (true|false)
 $ErrorActionPreference = 'Stop'
 $Url    = 'https://github.com/DasaITS/endpoint-baseline/releases/download/2026.10.30-dasa2/DASA-Win11Debloat-2026.10.30-dasa2.zip'
-$Sha256 = '51d37917ff3c0c6d32cb1ca8e68240de7c77e5dcf2372c2b75e93e6ca5bae3e0'
+$Sha256 = '28bc9dab45fd16390a8dc968f9607df09ed695011635e877e028454ccb64658f'
 $dest   = 'C:\ProgramData\DASA\Win11Debloat'
 $zip    = Join-Path $env:TEMP 'dasa-debloat.zip'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
