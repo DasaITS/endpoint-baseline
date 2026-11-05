@@ -1,0 +1,2 @@
+# Keep vendored upstream and configs byte-identical (hash-pinned bundle)
+* -text

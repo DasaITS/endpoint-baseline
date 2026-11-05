@@ -1,0 +1,24 @@
+{
+  "Version": "1.0",
+  "Note": "Win11Debloat does NOT manage services (only WSAIFabricSvc via DisableAISvcAutoStart). Applied by Invoke-DasaDebloatBaseline.ps1. StartupType Manual (not Disabled) wherever a feature might still demand-start it. Untested on endpoints - pilot first.",
+  "Services": [
+    { "Name": "XblAuthManager", "StartupType": "Manual",   "Why": "Xbox Live auth - consumer gaming" },
+    { "Name": "XblGameSave",    "StartupType": "Manual",   "Why": "Xbox cloud saves" },
+    { "Name": "XboxGipSvc",     "StartupType": "Manual",   "Why": "Xbox accessory mgmt" },
+    { "Name": "XboxNetApiSvc",  "StartupType": "Manual",   "Why": "Xbox networking" },
+    { "Name": "MapsBroker",     "StartupType": "Disabled", "Why": "Downloaded Maps manager; Maps app is discontinued" },
+    { "Name": "RetailDemo",     "StartupType": "Disabled", "Why": "Retail demo mode" },
+    { "Name": "WMPNetworkSvc",  "StartupType": "Disabled", "Why": "Windows Media Player network sharing (DLNA)" },
+    { "Name": "Fax",            "StartupType": "Disabled", "Why": "Fax service" },
+    { "Name": "lltdsvc",        "StartupType": "Disabled", "Why": "Link-Layer Topology Discovery responder" },
+    { "Name": "upnphost",       "StartupType": "Disabled", "Why": "UPnP device host" },
+    { "Name": "RemoteRegistry", "StartupType": "Disabled", "Why": "Remote registry editing; CIS recommends disabled" }
+  ],
+  "DeliberatelyLeftAlone": {
+    "DiagTrack": "Required by Defender for Endpoint and Intune/Autopatch reporting - decide per client",
+    "Spooler": "SMB prints; disable only on non-printing servers/kiosks",
+    "SysMain": "Helps spinning disks; negligible on SSD, not worth the risk",
+    "WSearch": "Outlook/Explorer search depends on it",
+    "BITS/wuauserv/UsoSvc/DoSvc": "Patching path - never touch"
+  }
+}
