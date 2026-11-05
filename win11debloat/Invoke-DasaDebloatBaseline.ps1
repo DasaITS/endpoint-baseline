@@ -30,8 +30,9 @@ function Invoke-Upstream([string[]]$Arguments) {
     $a = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$upstream,'-Silent','-LogPath',$logDir) + $Arguments
     if ($WhatIf) { $a += '-WhatIf' }
     Write-Host ">> powershell.exe $($a -join ' ')"
-    & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" @a
-    return $LASTEXITCODE
+    # Stream child output to the host only; the function's return value must be the exit code alone
+    & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" @a 2>&1 | ForEach-Object { Write-Host $_ }
+    return [int]$LASTEXITCODE
 }
 
 $failures = 0
@@ -69,6 +70,13 @@ try {
     }
 
     # Services
+    if (-not $SkipServices -and $WhatIf) {
+        $svc = Get-Content (Join-Path $root 'dasa-smb-services.json') -Raw | ConvertFrom-Json
+        foreach ($s in $svc.Services) {
+            $cur = Get-Service -Name $s.Name -ErrorAction SilentlyContinue
+            if ($cur) { Write-Host "[WhatIf] Service $($s.Name): $($cur.StartType) -> $($s.StartupType)" } else { Write-Host "[WhatIf] Service $($s.Name) not present - skip" }
+        }
+    }
     if (-not $SkipServices -and -not $WhatIf) {
         $svc = Get-Content (Join-Path $root 'dasa-smb-services.json') -Raw | ConvertFrom-Json
         foreach ($s in $svc.Services) {
