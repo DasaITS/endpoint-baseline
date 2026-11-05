@@ -1,8 +1,8 @@
 # Paste into NinjaOne as the script body (Run As: System, Windows PowerShell 5.1).
 # Script variables: $env:tier (Baseline|BaselinePlusOEM), $env:whatif (true|false)
 $ErrorActionPreference = 'Stop'
-$Url    = 'https://REPLACE-HOST/DASA-Win11Debloat-2026.10.30-v1.zip'   # host reachable by endpoints (decision pending)
-$Sha256 = 'REPLACE-WITH-HASH-OF-BUNDLE'                                  # Get-FileHash on the bundle; reviewed in the PR
+$Url    = 'https://github.com/DasaITS/endpoint-baseline/releases/download/2026.10.30-dasa1/DASA-Win11Debloat-2026.10.30-dasa1.zip'
+$Sha256 = '3556e19564b11f7dc974b73900c8a358adca0a54d18c990356abde5252cb01f4'
 $dest   = 'C:\ProgramData\DASA\Win11Debloat'
 $zip    = Join-Path $env:TEMP 'dasa-debloat.zip'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
