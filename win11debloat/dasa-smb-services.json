@@ -1,11 +1,11 @@
 {
   "Version": "1.0",
-  "Note": "Win11Debloat does NOT manage services (only WSAIFabricSvc via DisableAISvcAutoStart). Applied by Invoke-DasaDebloatBaseline.ps1. StartupType Manual (not Disabled) wherever a feature might still demand-start it. Untested on endpoints - pilot first.",
+  "Note": "Win11Debloat does NOT manage services (only WSAIFabricSvc via DisableAISvcAutoStart). Applied by Invoke-DasaDebloatBaseline.ps1. Xbox services set to Disabled by decision 2026-11-05 (SMB endpoints, no gaming). Verified applying on a Win11 26200 lab VM.",
   "Services": [
-    { "Name": "XblAuthManager", "StartupType": "Manual",   "Why": "Xbox Live auth - consumer gaming" },
-    { "Name": "XblGameSave",    "StartupType": "Manual",   "Why": "Xbox cloud saves" },
-    { "Name": "XboxGipSvc",     "StartupType": "Manual",   "Why": "Xbox accessory mgmt" },
-    { "Name": "XboxNetApiSvc",  "StartupType": "Manual",   "Why": "Xbox networking" },
+    { "Name": "XblAuthManager", "StartupType": "Disabled", "Why": "Xbox Live auth - consumer gaming" },
+    { "Name": "XblGameSave",    "StartupType": "Disabled", "Why": "Xbox cloud saves" },
+    { "Name": "XboxGipSvc",     "StartupType": "Disabled", "Why": "Xbox accessory mgmt" },
+    { "Name": "XboxNetApiSvc",  "StartupType": "Disabled", "Why": "Xbox networking" },
     { "Name": "MapsBroker",     "StartupType": "Disabled", "Why": "Downloaded Maps manager; Maps app is discontinued" },
     { "Name": "RetailDemo",     "StartupType": "Disabled", "Why": "Retail demo mode" },
     { "Name": "WMPNetworkSvc",  "StartupType": "Disabled", "Why": "Windows Media Player network sharing (DLNA)" },

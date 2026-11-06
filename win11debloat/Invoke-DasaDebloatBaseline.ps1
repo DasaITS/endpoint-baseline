@@ -63,6 +63,24 @@ try {
     $rc = Invoke-Upstream @('-Config', $fullCfg, '-Sysprep', '-AppRemovalTarget', 'AllUsers')
     if ($rc -ne 0) { $failures++; Write-Warning "Pass A exit code $rc" }
 
+    # Start layout: blank pins for NEW users only. Upstream cannot do this: ClearStart under -Sysprep targets
+    # SYSTEM, and ClearStartAllUsers would also wipe pins that existing users set themselves.
+    $startTpl = Join-Path $root 'upstream\Assets\Start\start2.bin'
+    if ($build -ge 22621 -and (Test-Path $startTpl)) {
+        if ($WhatIf) { Write-Host "[WhatIf] Clear Start pins in Default profile (new users only)" }
+        else {
+            try {
+                $defProfile = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList').Default
+                if (-not $defProfile) { $defProfile = Join-Path $env:SystemDrive 'Users\Default' }
+                $defStart = Join-Path $defProfile 'AppData\Local\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState'
+                New-Item -ItemType Directory -Force -Path $defStart | Out-Null
+                Copy-Item $startTpl (Join-Path $defStart 'start2.bin') -Force
+                Write-Host "Cleared Start pins in Default profile: $defStart"
+            }
+            catch { $failures++; Write-Warning "Default Start layout: $($_.Exception.Message)" }
+        }
+    }
+
     # Pass B: each existing local profile (skip system/service profiles)
     $profiles = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList' |
         ForEach-Object { Get-ItemProperty $_.PSPath } |

@@ -25,3 +25,6 @@ Intune-managed clients: let Intune own diagnostic-data settings (drop `DisableTe
 
 ## Deliberately kept (not removed even though upstream selects them by default)
 `MSTeams`, `Microsoft.MicrosoftOfficeHub`, `Microsoft.MicrosoftStickyNotes`, `Microsoft.Todos`, `Microsoft.PowerAutomateDesktop`, `Microsoft.WindowsAlarms`, `Microsoft.WindowsSoundRecorder`, `MicrosoftCorporationII.QuickAssist` (remote-support tool; added in 2026.10.30-dasa2).
+
+## Start menu
+New profiles get an empty Start (no sponsored pins such as Xbox/WhatsApp/LinkedIn): the runner copies upstream's blank `start2.bin` into the Default profile (2026.10.30-dasa4). Existing users keep their pins. Upstream's `ClearStartAllUsers` is deliberately not used because it also wipes existing users' pins.
